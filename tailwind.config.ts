@@ -13,6 +13,12 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      fontFamily: {
+        solina: ["var(--font-solina)"],
+      },
+      animation: {
+        "spin-slow": "spin linear infinite 3s",
+      },
     },
   },
   plugins: [],
