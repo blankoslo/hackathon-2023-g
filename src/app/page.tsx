@@ -134,6 +134,7 @@ export default function Home() {
             loop
             playsInline
             className="object-cover w-[55vh] h-[35vh]"
+            src={records[0].videoSrc}
             ref={videoRef}
             onLoadedMetadata={() => {
               setDuration(videoRef.current?.duration);
