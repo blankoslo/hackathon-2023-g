@@ -14,14 +14,20 @@ export default function Home() {
   const date = new Date();
   const location = "Oslo, Norge";
   const records = [
-    { title: "Kvikkleireskred near Gøteborg", videoSrc: "/video/lee_e6.mp4" },
+    {
+      title: "Kvikkleireskred near Gøteborg",
+      videoSrc: "/video/lee_e6.mp4",
+      color: "purple",
+    },
     {
       title: "Former Wagner Solider's Border Saga",
       videoSrc: "/video/ja_wagner_v2.mp4",
+      color: "green",
     },
     {
       title: "Jakob Ingebrigtsen's Wedding Day",
       videoSrc: "/video/sy_jakob.mp4",
+      color: "pink",
     },
   ];
   //
@@ -162,6 +168,7 @@ export default function Home() {
                         scrollRef.current.set(id, node);
                       }
                     }}
+                    color={record.color}
                   />
                 </div>
               );

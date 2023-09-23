@@ -2,18 +2,12 @@
 
 import classNames from "classnames";
 import Image from "next/image";
-import {
-  Dispatch,
-  ForwardedRef,
-  SetStateAction,
-  forwardRef,
-  useState,
-} from "react";
+import { ForwardedRef, forwardRef } from "react";
 
 interface VinlyRecordProps {
   isPlaying: boolean;
   handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  color?: "brown" | "green" | "red" | "pink" | "blue" | "purple";
+  color?: string;
 }
 
 export const VinylRecord = forwardRef(function VinylRecordInner(
