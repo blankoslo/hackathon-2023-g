@@ -20,6 +20,7 @@ export default function Home() {
       videoSrc: "/video/sy_jakob.mp4",
       url: "https://www.nrk.no/osloogviken/sier-ja-til-sin-elisabeth-1.16567747",
       color: "green",
+      poster: "/img/sy_news.jpg",
     },
     {
       title: "Former Wagner Solider's Border Saga",
@@ -143,7 +144,7 @@ export default function Home() {
             loop
             playsInline
             className="object-cover w-[55vh] h-[35vh]"
-            src={records[0].videoSrc}
+            poster={records[activeId].poster}
             ref={videoRef}
             onLoadedMetadata={() => {
               setDuration(videoRef.current?.duration);
