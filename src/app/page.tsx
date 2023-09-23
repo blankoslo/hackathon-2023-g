@@ -30,6 +30,12 @@ export default function Home() {
       title: "Kvikkleireskred near Gøteborg",
       videoSrc: "/video/lee_e6.mp4",
       url: "https://www.nrk.no/norge/leirskred-naer-goteborg-_-tre-personer-til-sykehus-1.16568693",
+      color: "brown",
+    },
+    {
+      title: "Local Man Celebrates Birthday",
+      videoSrc: "/video/jon.mp4",
+      url: "https://en.wikipedia.org/wiki/Birthday",
       color: "pink",
     },
   ];
@@ -144,14 +150,7 @@ export default function Home() {
         </div>
 
         <div className="overflow-hidden">
-          <div
-            className="flex gap-x-4"
-            style={{
-              width: `${
-                35 * (records.length + 2) + (records.length - 3) * 16
-              }vh`,
-            }}
-          >
+          <div className="flex gap-x-2 w-max">
             <div className="h-[35vh] w-[35vh]"></div>
             {records.map((record, id) => {
               return (
