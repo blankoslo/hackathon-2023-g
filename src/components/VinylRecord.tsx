@@ -11,19 +11,19 @@ import {
 } from "react";
 
 interface VinlyRecordProps {
-  title: string;
   isPlaying: boolean;
   handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  color?: "brown" | "green" | "red" | "pink" | "blue" | "purple";
 }
 
 export const VinylRecord = forwardRef(function VinylRecordInner(
-  { title, handleClick, isPlaying }: VinlyRecordProps,
+  { color = "green", handleClick, isPlaying }: VinlyRecordProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) {
   return (
     <button onClick={handleClick} className="relative w-full h-full" ref={ref}>
       <Image
-        src="/img/vinyl_static.png"
+        src={`/img/record-${color}.png`}
         width={400}
         height={400}
         alt=""

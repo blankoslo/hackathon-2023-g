@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 import { Header } from "@/components/Header";
+import { PlayAndStopIcon } from "@/components/PlayIcon";
 import { Video } from "@/components/Video";
 import { VinylRecord } from "@/components/VinylRecord";
 import classNames from "classnames";
@@ -127,7 +128,6 @@ export default function Home() {
                   )}
                 >
                   <VinylRecord
-                    title={record.title}
                     isPlaying={id === spinningId}
                     handleClick={handleClick(id)}
                     ref={(node) => {
@@ -169,7 +169,7 @@ export default function Home() {
               });
             }}
           >
-            <div>{isPlaying ? "stop" : "play"}</div>
+            <PlayAndStopIcon isPlaying={isPlaying} />
           </button>
         </div>
       </div>
