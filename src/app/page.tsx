@@ -8,6 +8,7 @@ import { VinylRecord } from "@/components/VinylRecord";
 import classNames from "classnames";
 import { useEffect, useRef, useState } from "react";
 import Marquee from "react-fast-marquee";
+import { useSwipeable } from "react-swipeable";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -50,6 +51,14 @@ export default function Home() {
   const [duration, setDuration] = useState<number>();
   const [currentTime, setCurrentTime] = useState<number>();
   const [controlsSpacerHeight, setControlsSpacerHeight] = useState<number>();
+  const swipeHandlers = useSwipeable({
+    onSwipedRight: () => {
+      handleClick((activeId - 1 + records.length) % records.length)();
+    },
+    onSwipedLeft: () => {
+      handleClick((activeId + 1) % records.length)();
+    },
+  });
 
   useEffect(() => {
     const resizeListener = () => {
@@ -169,6 +178,7 @@ export default function Home() {
                       "opacity-20 scale-90": id !== activeId,
                     }
                   )}
+                  {...swipeHandlers}
                 >
                   <VinylRecord
                     isPlaying={id === spinningId}
