@@ -5,7 +5,8 @@
 import { Header } from "@/components/Header";
 import { Video } from "@/components/Video";
 import { VinylRecord } from "@/components/VinylRecord";
-import { useRef, useState } from "react";
+import classNames from "classnames";
+import { useEffect, useRef, useState } from "react";
 import Marquee from "react-fast-marquee";
 
 export default function Home() {
@@ -20,6 +21,35 @@ export default function Home() {
     {
       title: "tre personer arrestert for smugling",
     },
+  ];
+  const scrollRef = useRef<Map<number, HTMLButtonElement>>(new Map());
+  const [activeId, setActiveId] = useState(0);
+  useEffect(() => {
+    const node = scrollRef.current.get(0);
+    if (node) {
+      node.scrollIntoView({
+        block: "nearest",
+        inline: "center",
+      });
+    }
+  }, []);
+
+  const handleClick = (id: number) => () => {
+    const node = scrollRef.current.get(id);
+    if (node) {
+      setActiveId(id);
+      node.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+  };
+
+  const records = [
+    { title: "Tre arresetert" },
+    { title: "Forstyrelser på smøgen" },
+    { title: "Synkehull på e6" },
   ];
 
   const handlePlayClick = () => {
@@ -63,14 +93,41 @@ export default function Home() {
           </Marquee>
         </div>
 
-        <div className="">
-          <button className="bg-black rounded-full h-[10vh] w-[10vh]" />
-          <div className="relative h-[35vh] w-[35vh] mx-auto">
-            <VinylRecord
-              title="Tre arrestert"
-              isPlaying={isPlaying}
-              handleClick={handlePlayClick}
-            />
+        <div className="overflow-hidden">
+          <div
+            className="flex gap-x-4"
+            style={{
+              width: `${
+                35 * (records.length + 2) + (records.length - 3) * 16
+              }vh`,
+            }}
+          >
+            <div className="h-[35vh] w-[35vh]"></div>
+            {records.map((record, id) => {
+              return (
+                <div
+                  key={id}
+                  className={classNames(
+                    "relative h-[35vh] w-[35vh] mx-auto transition-all duration-500",
+                    {
+                      "opacity-20 scale-90": id !== activeId,
+                    }
+                  )}
+                >
+                  <VinylRecord
+                    title={record.title}
+                    isPlaying={isPlaying}
+                    handleClick={handleClick(id)}
+                    ref={(node) => {
+                      if (node) {
+                        scrollRef.current.set(id, node);
+                      }
+                    }}
+                  />
+                </div>
+              );
+            })}
+            <div className="h-[35vh] w-[35vh]"></div>
           </div>
         </div>
       </div>

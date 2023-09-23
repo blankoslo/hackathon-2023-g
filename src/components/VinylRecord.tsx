@@ -1,6 +1,12 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  ForwardedRef,
+  SetStateAction,
+  forwardRef,
+  useState,
+} from "react";
 
 interface VinlyRecordProps {
   title: string;
@@ -8,14 +14,13 @@ interface VinlyRecordProps {
   handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export function VinylRecord({
-  title,
-  handleClick,
-  isPlaying,
-}: VinlyRecordProps) {
+export const VinylRecord = forwardRef(function VinylRecordInner(
+  { title, handleClick, isPlaying }: VinlyRecordProps,
+  ref: ForwardedRef<HTMLButtonElement>
+) {
   const radii = [40, 35, 30, 25, 20];
   return (
-    <button onClick={handleClick} className="relative w-full h-full">
+    <button onClick={handleClick} className="relative w-full h-full" ref={ref}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 101 101"
@@ -58,4 +63,4 @@ export function VinylRecord({
       <div className="absolute rounded-full inset-0 bg-gradient-to-r mix-blend-screen opacity-20 from-black via-white to-black" />
     </button>
   );
-}
+});
