@@ -15,8 +15,11 @@ export default function Home() {
   const date = new Date();
   const location = "Oslo, Norge";
   const records = [
-    { title: "Tre arresetert", videoSrc: "/video/result_voice.mp4" },
-    { title: "Forstyrelser på smøgen", videoSrc: "/video/result_voice.mp4" },
+    { title: "First stuff bla bla", videoSrc: "/video/result_voice.mp4" },
+    {
+      title: "Lee wagner",
+      videoSrc: "/video/lee_wagner_trimmed.mp4",
+    },
     { title: "Synkehull på e6", videoSrc: "/video/result_voice.mp4" },
   ];
   //
@@ -25,6 +28,9 @@ export default function Home() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeId, setActiveId] = useState(0);
   const [spinningId, setSpinningId] = useState<number>();
+
+  const [duration, setDuration] = useState<number>();
+  const [currentTime, setCurrentTime] = useState<number>();
   useEffect(() => {
     const listener = () => {
       const node = scrollRef.current.get(activeId);
@@ -37,6 +43,10 @@ export default function Home() {
     };
     listener();
     document.addEventListener("resize", listener);
+    if (videoRef.current) {
+      videoRef.current.src = records[0].videoSrc;
+    }
+
     return () => {
       document.removeEventListener("resize", listener);
     };
@@ -57,6 +67,11 @@ export default function Home() {
     const node = scrollRef.current.get(id);
     if (node) {
       setActiveId(id);
+      if (videoRef.current) {
+        videoRef.current.src = records[id].videoSrc;
+        videoRef.current.play();
+      }
+
       node.scrollIntoView({
         behavior: "smooth",
         block: "nearest",
@@ -85,10 +100,13 @@ export default function Home() {
           </Header>
         </div>
         <div className="px-8 flex items-center justify-center">
-          <Video
-            src={records[activeId].videoSrc}
-            type="video/mp4"
+          <video
+            loop
+            className="object-cover w-[55vh] h-[35vh]"
             ref={videoRef}
+            onLoadedMetadata={() => {
+              setDuration(videoRef.current?.duration);
+            }}
           />
         </div>
         <div className="pt-2 pb-8">
@@ -170,6 +188,7 @@ export default function Home() {
             }}
           >
             <PlayAndStopIcon isPlaying={isPlaying} />
+            <div>{videoRef.current && duration && currentTime / duration}</div>
           </button>
         </div>
       </div>
