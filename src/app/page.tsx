@@ -4,7 +4,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Header } from "@/components/Header";
 import { PlayAndStopIcon } from "@/components/PlayIcon";
-import { Video } from "@/components/Video";
 import { VinylRecord } from "@/components/VinylRecord";
 import classNames from "classnames";
 import { useEffect, useRef, useState } from "react";
@@ -15,12 +14,15 @@ export default function Home() {
   const date = new Date();
   const location = "Oslo, Norge";
   const records = [
-    { title: "First stuff bla bla", videoSrc: "/video/result_voice.mp4" },
+    { title: "Kvikkleireskred near Gøteborg", videoSrc: "/video/lee_e6.mp4" },
     {
-      title: "Lee wagner",
-      videoSrc: "/video/lee_wagner_trimmed.mp4",
+      title: "Former Wagner Solider's Border Saga",
+      videoSrc: "/video/ja_wagner_v2.mp4",
     },
-    { title: "Synkehull på e6", videoSrc: "/video/result_voice.mp4" },
+    {
+      title: "Jakob Ingebrigtsen's Wedding Day",
+      videoSrc: "/video/sy_jakob.mp4",
+    },
   ];
   //
 
@@ -47,8 +49,13 @@ export default function Home() {
       videoRef.current.src = records[0].videoSrc;
     }
 
+    const currentTimeInterval = setInterval(() => {
+      const currentTime = videoRef.current?.currentTime;
+      setCurrentTime(currentTime ? Math.floor(currentTime) : 0);
+    }, 1000);
     return () => {
       document.removeEventListener("resize", listener);
+      clearInterval(currentTimeInterval);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -84,6 +91,8 @@ export default function Home() {
       }, 400);
     }
   };
+
+  console.log(currentTime, duration);
 
   return (
     <main className="flex items-center justify-center">
@@ -162,7 +171,7 @@ export default function Home() {
         </div>
 
         <div className="fixed bottom-0 w-[50vh] rounded-b-3xl bg-black p-4 text-white grid grid-cols-[1fr,_min-content]">
-          <div className="flex flex-col uppercase gap-y-2">
+          <div className="flex flex-col uppercase">
             <div className="font-semibold text-xs">
               {date.toLocaleDateString("no-NB", {
                 weekday: "short",
@@ -187,8 +196,10 @@ export default function Home() {
               });
             }}
           >
+            <div>
+              {duration && currentTime !== undefined && currentTime / duration}
+            </div>
             <PlayAndStopIcon isPlaying={isPlaying} />
-            <div>{videoRef.current && duration && currentTime / duration}</div>
           </button>
         </div>
       </div>
