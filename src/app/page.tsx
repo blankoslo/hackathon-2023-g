@@ -57,8 +57,8 @@ export default function Home() {
 
     const currentTimeInterval = setInterval(() => {
       const currentTime = videoRef.current?.currentTime;
-      setCurrentTime(currentTime ? Math.floor(currentTime) : 0);
-    }, 1000);
+      setCurrentTime(currentTime ? currentTime : 0);
+    }, 100);
     return () => {
       document.removeEventListener("resize", listener);
       clearInterval(currentTimeInterval);
@@ -203,10 +203,15 @@ export default function Home() {
               });
             }}
           >
-            <div>
-              {duration && currentTime !== undefined && currentTime / duration}
-            </div>
-            <PlayAndStopIcon isPlaying={isPlaying} />
+            <PlayAndStopIcon
+              isPlaying={isPlaying}
+              progress={
+                (typeof duration == "number" &&
+                  typeof currentTime == "number" &&
+                  currentTime / duration) ||
+                0
+              }
+            />
           </button>
         </div>
       </div>
