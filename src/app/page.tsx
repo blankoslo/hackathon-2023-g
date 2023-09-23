@@ -15,16 +15,16 @@ export default function Home() {
   const location = "Oslo, Norge";
   const records = [
     {
-      title: "Former Wagner Solider's Border Saga",
-      videoSrc: "/video/ja_wagner_v2.mp4",
-      url: "https://www.nrk.no/tromsogfinnmark/the-barents-observer_-tidligere-wagner-soldat-pagrepet-pa-grensen-til-russland-1.16568760",
-      color: "purple",
-    },
-    {
       title: "Jakob Ingebrigtsen's Wedding Day",
       videoSrc: "/video/sy_jakob.mp4",
       url: "https://www.nrk.no/osloogviken/sier-ja-til-sin-elisabeth-1.16567747",
       color: "green",
+    },
+    {
+      title: "Former Wagner Solider's Border Saga",
+      videoSrc: "/video/ja_wagner_v2.mp4",
+      url: "https://www.nrk.no/tromsogfinnmark/the-barents-observer_-tidligere-wagner-soldat-pagrepet-pa-grensen-til-russland-1.16568760",
+      color: "purple",
     },
     {
       title: "Kvikkleireskred near Gøteborg",
