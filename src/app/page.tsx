@@ -167,7 +167,7 @@ export default function Home() {
           </Marquee>
         </div>
         <div className="overflow-x-hidden pb-8">
-          <div className="flex gap-x-2 w-max">
+          <div className="flex gap-x-2 w-max" {...swipeHandlers}>
             <div className="h-[35vh] w-[35vh]"></div>
             {records.map((record, id) => {
               return (
@@ -179,7 +179,6 @@ export default function Home() {
                       "opacity-20 scale-90": id !== activeId,
                     }
                   )}
-                  {...swipeHandlers}
                 >
                   <VinylRecord
                     isPlaying={id === spinningId}
