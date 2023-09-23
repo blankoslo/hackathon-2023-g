@@ -10,20 +10,20 @@ import { useEffect, useRef, useState } from "react";
 import Marquee from "react-fast-marquee";
 
 export default function Home() {
-  const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const date = new Date();
   const location = "Oslo, Norge";
-  const headlines = [
-    {
-      title: "tre personer arrestert for smugling",
-    },
-    {
-      title: "tre personer arrestert for smugling",
-    },
+  const records = [
+    { title: "Tre arresetert", videoSrc: "/video/result_voice.mp4" },
+    { title: "Forstyrelser på smøgen", videoSrc: "/video/result_voice.mp4" },
+    { title: "Synkehull på e6", videoSrc: "/video/result_voice.mp4" },
   ];
+  //
+
   const scrollRef = useRef<Map<number, HTMLButtonElement>>(new Map());
+  const [isPlaying, setIsPlaying] = useState(false);
   const [activeId, setActiveId] = useState(0);
+  const [spinningId, setSpinningId] = useState<number>();
   useEffect(() => {
     const node = scrollRef.current.get(0);
     if (node) {
@@ -34,6 +34,16 @@ export default function Home() {
     }
   }, []);
 
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.play();
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [isPlaying]);
+
   const handleClick = (id: number) => () => {
     const node = scrollRef.current.get(id);
     if (node) {
@@ -43,20 +53,14 @@ export default function Home() {
         block: "nearest",
         inline: "center",
       });
+      setSpinningId(undefined);
+      setIsPlaying(true);
+      setTimeout(() => {
+        setSpinningId(id);
+      }, 400);
     }
   };
 
-  const records = [
-    { title: "Tre arresetert" },
-    { title: "Forstyrelser på smøgen" },
-    { title: "Synkehull på e6" },
-  ];
-
-  const handlePlayClick = () => {
-    const nextIsPlaying = !isPlaying;
-    nextIsPlaying ? videoRef.current?.play() : videoRef.current?.pause();
-    setIsPlaying(nextIsPlaying);
-  };
   return (
     <main className="flex items-center justify-center">
       <div
@@ -73,14 +77,14 @@ export default function Home() {
         </div>
         <div className="px-8">
           <Video
-            src={"/video/result_voice.mp4"}
+            src={records[activeId].videoSrc}
             type="video/mp4"
             ref={videoRef}
           />
         </div>
         <div className="pt-2 pb-8">
           <Marquee>
-            {headlines.map((headline, i) => {
+            {records.map((headline, i) => {
               return (
                 <div
                   className="bg-black mx-1 text-white flex uppercase shrink-0 w-fit p-2"
@@ -116,7 +120,7 @@ export default function Home() {
                 >
                   <VinylRecord
                     title={record.title}
-                    isPlaying={isPlaying}
+                    isPlaying={id === spinningId}
                     handleClick={handleClick(id)}
                     ref={(node) => {
                       if (node) {
@@ -129,6 +133,23 @@ export default function Home() {
             })}
             <div className="h-[35vh] w-[35vh]"></div>
           </div>
+        </div>
+
+        <div>
+          <button
+            onClick={() => {
+              setIsPlaying((prev) => {
+                if (prev) {
+                  setSpinningId(undefined);
+                } else {
+                  setSpinningId(activeId);
+                }
+                return !prev;
+              });
+            }}
+          >
+            {isPlaying ? "stop" : "play"}
+          </button>
         </div>
       </div>
     </main>
