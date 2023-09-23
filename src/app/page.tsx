@@ -15,18 +15,21 @@ export default function Home() {
   const location = "Oslo, Norge";
   const records = [
     {
-      title: "Kvikkleireskred near Gøteborg",
-      videoSrc: "/video/lee_e6.mp4",
-      color: "purple",
-    },
-    {
       title: "Former Wagner Solider's Border Saga",
       videoSrc: "/video/ja_wagner_v2.mp4",
-      color: "green",
+      url: "https://www.nrk.no/tromsogfinnmark/the-barents-observer_-tidligere-wagner-soldat-pagrepet-pa-grensen-til-russland-1.16568760",
+      color: "purple",
     },
     {
       title: "Jakob Ingebrigtsen's Wedding Day",
       videoSrc: "/video/sy_jakob.mp4",
+      url: "https://www.nrk.no/osloogviken/sier-ja-til-sin-elisabeth-1.16567747",
+      color: "green",
+    },
+    {
+      title: "Kvikkleireskred near Gøteborg",
+      videoSrc: "/video/lee_e6.mp4",
+      url: "https://www.nrk.no/norge/leirskred-naer-goteborg-_-tre-personer-til-sykehus-1.16568693",
       color: "pink",
     },
   ];
@@ -128,12 +131,13 @@ export default function Home() {
           <Marquee>
             {records.map((headline, i) => {
               return (
-                <div
+                <a
                   className="bg-black mx-1 text-white flex uppercase shrink-0 w-fit p-2"
                   key={i}
+                  href={headline.url}
                 >
                   {headline.title}
-                </div>
+                </a>
               );
             })}
           </Marquee>
