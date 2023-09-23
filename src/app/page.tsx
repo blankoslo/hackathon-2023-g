@@ -83,7 +83,7 @@ export default function Home() {
             <Header.Date date={date} location={location} />
           </Header>
         </div>
-        <div className="px-8">
+        <div className="px-8 flex items-center justify-center">
           <Video
             src={records[activeId].videoSrc}
             type="video/mp4"

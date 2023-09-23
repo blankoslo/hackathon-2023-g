@@ -34,16 +34,16 @@ Header.Date = function Date({
   location: string;
 }) {
   return (
-    <div className="uppercase flex justify-between items-center border-y border-black py-1 font-solina">
-      <span>
+    <div className="uppercase grid w-full grid-cols-3 border-y border-black py-1 font-solina">
+      <span className="text-left">
         {date.toLocaleDateString("no-NB", {
           weekday: "short",
           day: "2-digit",
           month: "short",
         })}
       </span>
-      <span>{location}</span>
-      <span>
+      <span className="text-center">{location}</span>
+      <span className="text-right">
         {date.toLocaleDateString("no-NB", {
           year: "numeric",
         })}
