@@ -42,14 +42,17 @@ export default function Home() {
   //
 
   const scrollRef = useRef<Map<number, HTMLButtonElement>>(new Map());
+  const controlsContainerRef = useRef<HTMLDivElement>(null);
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeId, setActiveId] = useState(0);
   const [spinningId, setSpinningId] = useState<number>();
-
   const [duration, setDuration] = useState<number>();
   const [currentTime, setCurrentTime] = useState<number>();
+  const [controlsSpacerHeight, setControlsSpacerHeight] = useState<number>();
+
   useEffect(() => {
-    const listener = () => {
+    const resizeListener = () => {
       const node = scrollRef.current.get(activeId);
       if (node) {
         node.scrollIntoView({
@@ -57,9 +60,14 @@ export default function Home() {
           inline: "center",
         });
       }
+      if (controlsContainerRef.current) {
+        setControlsSpacerHeight(
+          controlsContainerRef.current.getBoundingClientRect().height
+        );
+      }
     };
-    listener();
-    document.addEventListener("resize", listener);
+    resizeListener();
+    document.addEventListener("resize", resizeListener);
     if (videoRef.current) {
       videoRef.current.src = records[0].videoSrc;
     }
@@ -69,7 +77,7 @@ export default function Home() {
       setCurrentTime(currentTime ? currentTime : 0);
     }, 100);
     return () => {
-      document.removeEventListener("resize", listener);
+      document.removeEventListener("resize", resizeListener);
       clearInterval(currentTimeInterval);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -107,12 +115,10 @@ export default function Home() {
     }
   };
 
-  console.log(currentTime, duration);
-
   return (
     <main className="flex items-center justify-center">
       <div
-        className="text-black h-screen w-[50vh] rounded-3xl"
+        className="text-black min-h-screen w-[50vh]"
         style={{
           background: "#E6CEB9",
         }}
@@ -126,6 +132,7 @@ export default function Home() {
         <div className="px-8 flex items-center justify-center">
           <video
             loop
+            playsInline
             className="object-cover w-[55vh] h-[35vh]"
             ref={videoRef}
             onLoadedMetadata={() => {
@@ -148,8 +155,7 @@ export default function Home() {
             })}
           </Marquee>
         </div>
-
-        <div className="overflow-hidden">
+        <div className="overflow-x-hidden pb-8">
           <div className="flex gap-x-2 w-max">
             <div className="h-[35vh] w-[35vh]"></div>
             {records.map((record, id) => {
@@ -179,44 +185,50 @@ export default function Home() {
             <div className="h-[35vh] w-[35vh]"></div>
           </div>
         </div>
-
-        <div className="fixed bottom-0 w-[50vh] rounded-b-3xl bg-black p-4 text-white grid grid-cols-[1fr,_min-content]">
-          <div className="flex flex-col uppercase">
-            <div className="font-semibold text-xs">
-              {date.toLocaleDateString("no-NB", {
-                weekday: "short",
-                day: "2-digit",
-                month: "short",
-              })}
-            </div>
-            <div className="font-medium text-xl">
-              {records[activeId] && records[activeId].title}
-            </div>
+        <div
+          className="w-[35vh]"
+          style={{ height: controlsSpacerHeight }}
+        ></div>
+      </div>
+      <div
+        ref={controlsContainerRef}
+        className="fixed bottom-0 w-[50vh] bg-black p-4 text-white grid grid-cols-[1fr,_min-content]"
+      >
+        <div className="flex flex-col uppercase">
+          <div className="font-semibold text-xs">
+            {date.toLocaleDateString("no-NB", {
+              weekday: "short",
+              day: "2-digit",
+              month: "short",
+            })}
           </div>
-          <button
-            className="flex-shrink"
-            onClick={() => {
-              setIsPlaying((prev) => {
-                if (prev) {
-                  setSpinningId(undefined);
-                } else {
-                  setSpinningId(activeId);
-                }
-                return !prev;
-              });
-            }}
-          >
-            <PlayAndStopIcon
-              isPlaying={isPlaying}
-              progress={
-                (typeof duration == "number" &&
-                  typeof currentTime == "number" &&
-                  currentTime / duration) ||
-                0
-              }
-            />
-          </button>
+          <div className="font-medium text-xl">
+            {records[activeId] && records[activeId].title}
+          </div>
         </div>
+        <button
+          className="flex-shrink"
+          onClick={() => {
+            setIsPlaying((prev) => {
+              if (prev) {
+                setSpinningId(undefined);
+              } else {
+                setSpinningId(activeId);
+              }
+              return !prev;
+            });
+          }}
+        >
+          <PlayAndStopIcon
+            isPlaying={isPlaying}
+            progress={
+              (typeof duration == "number" &&
+                typeof currentTime == "number" &&
+                currentTime / duration) ||
+              0
+            }
+          />
+        </button>
       </div>
     </main>
   );
